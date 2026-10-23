@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090716">
+  <meta name="description" content="COREVISION First Contact, a Luna Core mixed-reality experiment for Meta Quest 3.">
+  <title>COREVISION // FIRST CONTACT</title>
+  <style>
+    :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;--text:#f5efff;--muted:#aa9bbf;--line:#483067;--violet:#a76afd;--blue:#91eaff}
+    *{box-sizing:border-box}html,body{min-height:100%;margin:0}body{background:radial-gradient(ellipse at 50% -30%,#48286b 0%,#151026 46%,#080714 88%);color:var(--text);overflow-x:hidden}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.3;background-image:radial-gradient(#dfc9ff .7px,transparent .9px);background-size:39px 39px;mask-image:linear-gradient(180deg,#000,transparent)}
+    #xr-canvas{position:fixed;inset:0;display:none;z-index:20}
+    .shell{position:relative;max-width:860px;margin:auto;padding:22px 19px 36px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px}.logo{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:800;letter-spacing:.16em}.mark{height:34px;width:34px;border:1px solid #aa83e3;border-radius:50%;display:grid;place-items:center;color:#e3c7ff;box-shadow:0 0 18px #a76afd55}.chip{border:1px solid #594274;background:#261a38b0;border-radius:30px;padding:8px 11px;font:700 10px ui-monospace,monospace;letter-spacing:.08em;color:#d5baff}
+    .hero{padding:60px 0 25px;text-align:center}.eyebrow{font:700 11px ui-monospace,monospace;letter-spacing:.24em;color:#b99fe0}.orb{width:110px;height:110px;margin:26px auto;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff7ff 0%,#dfb5ff 10%,#9164e8 30%,#3e2769 65%,#110e24 85%);box-shadow:0 0 25px #b47afa88,0 0 88px #9250ec66;position:relative;animation:float 4s ease-in-out infinite}.orb:after{content:"";position:absolute;inset:-12px;border:1px solid #b587ff66;border-radius:50%;transform:rotateX(60deg)}@keyframes float{50%{transform:translateY(-7px)}}
+    h1{font-size:clamp(34px,9vw,72px);letter-spacing:.11em;margin:12px 0 2px;font-weight:900;text-indent:.11em}h2{font-size:15px;letter-spacing:.16em;color:#d6baff;font-weight:700;margin:10px 0 20px}.sub{color:#b0a0c8;max-width:560px;margin:0 auto 25px;line-height:1.65;font-size:14px}
+    .actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}.button{appearance:none;cursor:pointer;color:white;border:1px solid #855ac2;border-radius:13px;padding:15px 20px;font:800 12px ui-sans-serif,system-ui;letter-spacing:.09em;background:linear-gradient(135deg,#7f48c4,#453184);box-shadow:0 10px 30px #110b2e}.button.secondary{background:#251b38;border-color:#564071}.button:disabled{cursor:not-allowed;opacity:.65}.button:focus-visible,.mini:focus-visible{outline:3px solid #bfe8ff;outline-offset:3px}
+    .panel{background:linear-gradient(125deg,#211633ee,#141022ee);border:1px solid #604080;border-radius:20px;padding:22px;box-shadow:0 16px 45px #0005;margin-top:16px}.bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.mono{font:700 11px ui-monospace,SFMono-Regular,monospace;letter-spacing:.11em;color:#c8a9f9}.green{color:#a4ffd3}.display{border:1px solid #50396c;background:#0d0a18;border-radius:13px;padding:23px;margin:17px 0;min-height:124px}.speaker{font-size:11px;color:#ae8fdf;letter-spacing:.16em;font-weight:800;margin-bottom:12px}.dialogue{font-size:clamp(17px,4vw,22px);font-weight:650;line-height:1.5;margin:0}.minirow{display:flex;gap:10px;flex-wrap:wrap}.mini{cursor:pointer;border:1px solid #654782;border-radius:10px;background:#2e2048;padding:12px 17px;color:#f9edff;font-weight:750;flex:1;min-width:125px}.mini:nth-child(2){background:#1d1931;border-color:#464069}.fine{font-size:12px;color:var(--muted);line-height:1.6;margin:16px 0 0}footer{color:#8f819f;text-align:center;font-size:11px;line-height:1.7;padding:22px 0}.status{display:flex;gap:7px;align-items:center;color:#baa7d4;font-size:12px}.dot{width:7px;height:7px;border-radius:50%;background:#a69aab}.dot.ok{background:#7de6ad;box-shadow:0 0 10px #72eda7}.dot.warn{background:#ffcb79}.note{padding:15px;border:1px solid #4d3a60;background:#130f20;border-radius:13px;font-size:12px;color:#b8a8cc;line-height:1.6;margin-top:18px}
+    @media(min-width:750px){.hero{padding-top:65px}.shell{padding-top:28px}.panel{max-width:720px;margin-left:auto;margin-right:auto}}@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+  </style>
+  <script type="importmap">
+    {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"}}
+  </script>
+</head>
+<body>
+  <main class="shell">
+    <header class="top"><div class="logo"><span class="mark" aria-hidden="true">☾</span><span>LUNA CORE / LABS</span></div><span class="chip">ALPHA 0.1</span></header>
+    <section class="hero" aria-label="COREVISION launch console">
+      <div class="eyebrow">GUARDIAN PROTOCOL // INITIALISING</div>
+      <div class="orb" aria-hidden="true"></div>
+      <h1>COREVISION</h1><h2>FIRST CONTACT</h2>
+      <p class="sub">Your world. Our universe. One doorway.<br>Meet the first spatial prototype of Luna Core, built for Meta Quest 3.</p>
+      <div class="actions"><button id="enter-ar" class="button" type="button" disabled>CHECKING QUEST SUPPORT...</button><button id="diagnostic" class="button secondary" type="button">SYSTEM DIAGNOSTICS</button></div>
+    </section>
+    <section class="panel" aria-label="Preview console">
+      <div class="bar"><span class="mono">TRANSMISSION PREVIEW</span><span class="status"><span id="status-dot" class="dot"></span><span id="status-text" aria-live="polite">Checking immersive AR...</span></span></div>
+      <div class="display" aria-live="polite"><div id="speaker" class="speaker">LUNA / FIRST CONTACT</div><p id="dialogue" class="dialogue">Corekeeper? Can you see me?</p></div>
+      <div class="minirow"><button id="luna" class="mini" type="button">☾ HEAR FROM LUNA</button><button id="crumble" class="mini" type="button">🐾 HEAR FROM CRUMBLE</button></div>
+      <p class="fine">This is an interactive text preview. In the Quest 3, the violet dashboard will appear in passthrough. Controller selection and hand pinches are experimental. Live speech and AI conversations are not connected in this build.</p>
+    </section>
+    <div class="note"><strong>SAFETY:</strong> Use in a clear, stationary area. Do not walk around your home, approach stairs, or depend on headset passthrough for hazard detection during early testing. This prototype does not access or record camera footage or microphone audio.</div>
+    <footer>Built for the Corekeeper. Refined by Luna. Occasionally interrupted by Crumble.<br>COREVISION © Luna Core // Experimental Prototype</footer>
+  </main>
+  <script type="module">
+    import * as THREE from 'three';
+
+    const el = (id) => document.getElementById(id);
+    const enter = el('enter-ar');
+    const statusDot = el('status-dot');
+    const statusText = el('status-text');
+    const lines = {
+      luna: {speaker:'LUNA / FIRST CONTACT', text:'Corekeeper? Can you see me?'},
+      crumble: {speaker:'crumble / totally authorised', text:'hello. i found the biscuit tin.'}
+    };
+    let current = 'luna';
+    let session = null;
+    let renderer, camera, scene, panel, panelTexture, panelCanvas, panelCtx;
+    const buttons = [];
+    const raycaster = new THREE.Raycaster();
+    const matrix = new THREE.Matrix4();
+
+    function setStatus(text,kind='warn') { statusText.textContent=text; statusDot.className=`dot ${kind}`; }
+    function selectPerson(person) {
+      current = person;
+      el('speaker').textContent = lines[person].speaker;
+      el('dialogue').textContent = lines[person].text;
+      if(panelTexture) paintPanel();
+    }
+    el('luna').addEventListener('click',()=>selectPerson('luna'));
+    el('crumble').addEventListener('click',()=>selectPerson('crumble'));
+
+    el('diagnostic').addEventListener('click', async()=> {
+      const secure = window.isSecureContext ? 'YES' : 'NO';
+      const xr = !!navigator.xr;
+      let ar = false;
+      if(xr) { try {ar=await navigator.xr.isSessionSupported('immersive-ar');}catch{} }
+      el('speaker').textContent = 'SYSTEM / DIAGNOSTICS';
+      el('dialogue').textContent = `Secure origin: ${secure} · WebXR: ${xr?'YES':'NO'} · Immersive AR: ${ar?'YES':'NO'}`;
+    });
+
+    function roundedRect(ctx,x,y,w,h,r){
+      ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+      ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+      ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+      ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
+    }
+    function textWrap(ctx,text,x,y,maxWidth,lineHeight){
+      const words=text.split(' ');let line='';
+      for(const word of words){const test=line?line+' '+word:word;
+        if(ctx.measureText(test).width>maxWidth&&line){ctx.fillText(line,x,y);y+=lineHeight;line=word;}else{line=test;}}
+      ctx.fillText(line,x,y);
+    }
+    function makeCanvas(w,h){const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;return canvas;}
+    function makeLabel(text,color='#9c6de9'){
+      const canvas=makeCanvas(512,128),ctx=canvas.getContext('2d');
+      roundedRect(ctx,4,4,504,120,24);ctx.fillStyle=color;ctx.fill();ctx.strokeStyle='#d0b3ff';ctx.lineWidth=3;ctx.stroke();
+      ctx.font='800 33px Arial';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#fff';ctx.fillText(text,256,64);
+      const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;return texture;
+    }
+    function paintPanel(){
+      const c=panelCtx,W=1024,H=640;
+      c.clearRect(0,0,W,H);
+      roundedRect(c,8,8,W-16,H-16,40);c.fillStyle='rgba(17,11,37,0.93)';c.fill();
+      c.strokeStyle='#b886ff';c.lineWidth=6;c.stroke();
+      c.fillStyle='#ceb0ff';c.font='bold 24px Arial';c.fillText('LUNA CORE  //  GUARDIAN PROTOCOL',62,80);
+      c.strokeStyle='#543b83';c.lineWidth=2;c.beginPath();c.moveTo(60,116);c.lineTo(964,116);c.stroke();
+      c.fillStyle='#f2e8ff';c.font='bold 68px Arial';c.fillText('COREVISION',60,209);
+      c.fillStyle='#c6a8ff';c.font='bold 27px Arial';c.fillText('FIRST CONTACT  ·  ALPHA 0.1',64,267);
+      c.fillStyle='#9df4c1';c.font='bold 23px Arial';c.fillText('● VISUAL INTERFACE ONLINE',64,326);
+      c.fillStyle='#b69fe0';c.font='bold 22px Arial';c.fillText(lines[current].speaker.toUpperCase(),64,390);
+      c.fillStyle='#ffffff';c.font='bold 33px Arial';textWrap(c,lines[current].text,64,445,880,44);
+      c.fillStyle='#9683b4';c.font='21px Arial';c.fillText('SELECT ONE OF THE PANELS BELOW',62,584);
+      panelTexture.needsUpdate=true;
+    }
+    function buildScene(){
+      scene=new THREE.Scene();
+      camera=new THREE.PerspectiveCamera(70,innerWidth/innerHeight,.01,40);
+      renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
+      renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);
+      renderer.setClearColor(0x000000,0);renderer.xr.enabled=true;
+      renderer.xr.setReferenceSpaceType('local');
+      renderer.domElement.id='xr-canvas';document.body.appendChild(renderer.domElement);
+      panel=new THREE.Group();panel.position.set(0,0,-1.55);scene.add(panel);
+      panelCanvas=makeCanvas(1024,640);panelCtx=panelCanvas.getContext('2d');
+      panelTexture=new THREE.CanvasTexture(panelCanvas);panelTexture.colorSpace=THREE.SRGBColorSpace;
+      const body=new THREE.Mesh(new THREE.PlaneGeometry(1.28,.8),new THREE.MeshBasicMaterial({map:panelTexture,transparent:true,side:THREE.DoubleSide,depthWrite:false}));
+      panel.add(body);paintPanel();
+      for(const entry of [{key:'luna',name:'☾  LUNA',x:-.33,color:'#6c3baa'},{key:'crumble',name:'CRUMBLE',x:.33,color:'#3c3061'}]){
+        const texture=makeLabel(entry.name,entry.color);
+        const mesh=new THREE.Mesh(new THREE.PlaneGeometry(.59,.145),new THREE.MeshBasicMaterial({map:texture,transparent:true,side:THREE.DoubleSide,depthWrite:false}));
+        mesh.position.set(entry.x,-.51,.012);mesh.userData.person=entry.key;panel.add(mesh);buttons.push(mesh);
+      }
+      // Two controller target rays: Meta's emulated hand rays can also emit select events on pinch.
+      const lineGeometry=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0),new THREE.Vector3(0,0,-1)]);
+      for(let i=0;i<2;i++){
+        const controller=renderer.xr.getController(i);
+        const line=new THREE.Line(lineGeometry,new THREE.LineBasicMaterial({color:0xc9a0ff,transparent:true,opacity:.7}));line.scale.z=2;controller.add(line);
+        controller.addEventListener('select',()=>{
+          matrix.identity().extractRotation(controller.matrixWorld);
+          raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
+          raycaster.ray.direction.set(0,0,-1).applyMatrix4(matrix);
+          const hit=raycaster.intersectObjects(buttons,false)[0];
+          if(hit?.object?.userData?.person)selectPerson(hit.object.userData.person);
+        });
+        scene.add(controller);
+      }
+      renderer.setAnimationLoop(()=>{if(session)renderer.render(scene,camera);});
+    }
+    async function startAR(){
+      enter.disabled=true;
+      try{
+        if(!renderer)buildScene();
+        // Request optional features without requiring hand-tracking or local-floor support.
+        const s=await navigator.xr.requestSession('immersive-ar',{optionalFeatures:['local-floor','hand-tracking']});
+        session=s;
+        s.addEventListener('end',()=>{session=null;renderer.domElement.style.display='none';enter.disabled=false;enter.textContent='ENTER MIXED REALITY';setStatus('SESSION ENDED','ok');});
+        renderer.domElement.style.display='block';
+        await renderer.xr.setSession(s);
+        enter.textContent='SESSION ACTIVE';setStatus('IMMERSIVE AR ACTIVE','ok');
+      }catch(err){session=null;if(renderer)renderer.domElement.style.display='none';enter.disabled=false;enter.textContent='ENTER MIXED REALITY';setStatus('AR START FAILED','warn');
+        el('speaker').textContent='SYSTEM / START ERROR';el('dialogue').textContent=String(err?.message||err);
+      }
+    }
+    enter.addEventListener('click',startAR);
+    async function detect(){
+      if(!window.isSecureContext){enter.textContent='HTTPS REQUIRED';setStatus('SITE REQUIRES HTTPS');return;}
+      if(!navigator.xr?.isSessionSupported){enter.textContent='OPEN IN QUEST BROWSER';setStatus('WEBXR UNAVAILABLE HERE');return;}
+      try{const supported=await navigator.xr.isSessionSupported('immersive-ar');
+        enter.disabled=!supported;enter.textContent=supported?'ENTER MIXED REALITY':'IMMERSIVE AR UNSUPPORTED';
+        setStatus(supported?'QUEST AR READY':'NO IMMERSIVE AR ON THIS DEVICE',supported?'ok':'warn');
+      }catch{enter.textContent='AR CHECK FAILED';setStatus('SUPPORT CHECK FAILED');}
+    }
+    detect();
+  </script>
+</body>
+</html>
